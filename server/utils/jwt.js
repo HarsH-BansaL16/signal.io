@@ -8,7 +8,7 @@ const sendToken = (user, statusCode, res) => {
     httpOnly: true,
     secure: process.env.REACT_APP_NODE_ENV === 'production',
     sameSite: 'None',
-    domain: '.signal-io.onrender.com', 
+    domain: '.onrender.com',
   }
 
   res
