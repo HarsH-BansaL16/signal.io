@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const toast = useToast();
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
 
   const setUser = (user) => {
     setCurrentUser(user);

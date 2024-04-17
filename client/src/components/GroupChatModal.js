@@ -86,7 +86,7 @@ function GroupChatModal() {
   };
 
   const handleSubmit = async () => {
-    const API_URL = process.env.API_URL
+    const API_URL = process.env.REACT_APP_API_URL
 
     if (!groupChatName || selectedUsers.length < 1) {
       return toast({

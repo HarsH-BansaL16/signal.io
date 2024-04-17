@@ -48,7 +48,7 @@ app.use('/api/message', messageRouter);
 app.use(errorMiddleware);
 
 // deployment setup
-if (process.env.NODE_ENV === 'production') {
+if (process.env.REACT_APP_NODE_ENV === 'production') {
   const __directory = path.resolve();
   app.use(express.static(path.join(__directory, '/client/build')));
   app.get('*', (req, res) => {
@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 } else {
   app.get('/', (req, res) => {
-    res.send('API service running 🚀');
+    res.send('API service running');
   });
 }
 

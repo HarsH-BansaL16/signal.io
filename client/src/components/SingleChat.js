@@ -48,7 +48,7 @@ function SingleChat() {
   const [isTyping, setIsTyping] = useState(false)
   const [loading, setLoading] = useState(false)
   const toast = useToast()
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
 
   const fetchMessages = async () => {
     if (!selectedChat) {
@@ -125,7 +125,7 @@ function SingleChat() {
 
   useEffect(() => {
     socket = io(
-      process.env.NODE_ENV !== 'production'
+      process.env.REACT_APP_NODE_ENV !== 'production'
         ? 'http://localhost:5000'
         : 'https://signal-io-api.onrender.com:5000'
     )

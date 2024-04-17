@@ -31,7 +31,7 @@ function SearchUserSideDrawer({ children }) {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [chatsLoading, setChatsLoading] = useState(false);
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
 
   const handleSearch = async (e) => {
     e.preventDefault();

@@ -12,7 +12,7 @@ export const ChatProvider = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [notification, setNotification] = useState([]);
   const [fetchFlag, setFetchFlag] = useState(false);
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
 
   const fetchUserChats = async () => {
     try {
