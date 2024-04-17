@@ -56,7 +56,9 @@ function SingleChat() {
     }
     try {
       setLoading(true)
-      const response = await axios.get(`${API_URL}/api/message/${selectedChat._id}`)
+      const response = await axios.get(
+        `${API_URL}/api/message/${selectedChat._id}`
+      )
       const { data } = response.data
       setMessages(data)
       setLoading(false)
@@ -127,7 +129,7 @@ function SingleChat() {
     socket = io(
       process.env.REACT_APP_NODE_ENV !== 'production'
         ? 'http://localhost:5000'
-        : 'https://signal-io-api.onrender.com:5000'
+        : 'https://api-signal-io.onrender.com:5000'
     )
     socket.emit('setup', currentUser)
     socket.on('connected', () => setSocketConnected(true))
