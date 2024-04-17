@@ -6,9 +6,6 @@ const sendToken = (user, statusCode, res) => {
       Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: process.env.REACT_APP_NODE_ENV === 'production',
-    sameSite: 'None',
-    domain: '.onrender.com',
   }
 
   res
