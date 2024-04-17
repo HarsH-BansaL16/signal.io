@@ -44,12 +44,13 @@ function UpdateGroupChatModal({ fetchMessages }) {
   const [leaveLoading, setLeaveLoading] = useState(false);
   const [renameLoading, setRenameLoading] = useState(false);
   const toast = useToast();
+  const API_URL = process.env.API_URL
 
   const handleSearch = async (query) => {
     setSearchText(query);
     try {
       setLoading(true);
-      const response = await axios.get(`/api/user?search=${query}`);
+      const response = await axios.get(`${API_URL}/api/user?search=${query}`);
       const { data } = response.data;
       setLoading(false);
       setSearchResult(data);
@@ -94,7 +95,7 @@ function UpdateGroupChatModal({ fetchMessages }) {
         userId: userToBeAdded._id,
       };
       setLoading(true);
-      const response = await axios.post('/api/chat/groupadd', body);
+      const response = await axios.post(`${API_URL}/api/chat/groupadd`, body);
       const { data } = response.data;
       setSelectedChat(data);
       setFetchFlag((prev) => {
@@ -133,7 +134,7 @@ function UpdateGroupChatModal({ fetchMessages }) {
         userId: userToBeRemoved._id,
       };
       setLoading(true);
-      const response = await axios.post('/api/chat/groupremove', body);
+      const response = await axios.post(`${API_URL}/api/chat/groupremove`, body);
       const { data } = response.data;
       setSelectedChat(data);
       setFetchFlag((prev) => {
@@ -182,7 +183,7 @@ function UpdateGroupChatModal({ fetchMessages }) {
         chatName: groupChatName,
       };
       setRenameLoading(true);
-      const response = await axios.post('/api/chat/grouprename', body);
+      const response = await axios.post(`${API_URL}/api/chat/grouprename`, body);
       const { data } = response.data;
       setSelectedChat(data);
       setFetchFlag((prev) => {
@@ -219,7 +220,7 @@ function UpdateGroupChatModal({ fetchMessages }) {
         userId: currentUser.id,
       };
       setLeaveLoading(true);
-      const response = await axios.post('/api/chat/groupremove', body);
+      const response = await axios.post(`${API_URL}/api/chat/groupremove`, body);
       const { data } = response.data;
       setFetchFlag((prev) => {
         return !prev;

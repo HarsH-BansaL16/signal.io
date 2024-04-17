@@ -48,6 +48,7 @@ function SingleChat() {
   const [isTyping, setIsTyping] = useState(false)
   const [loading, setLoading] = useState(false)
   const toast = useToast()
+  const API_URL = process.env.API_URL
 
   const fetchMessages = async () => {
     if (!selectedChat) {
@@ -55,7 +56,7 @@ function SingleChat() {
     }
     try {
       setLoading(true)
-      const response = await axios.get(`/api/message/${selectedChat._id}`)
+      const response = await axios.get(`${API_URL}/api/message/${selectedChat._id}`)
       const { data } = response.data
       setMessages(data)
       setLoading(false)
@@ -85,7 +86,7 @@ function SingleChat() {
           content: newMessage,
         }
         setNewMessage('')
-        const response = await axios.post('/api/message', body)
+        const response = await axios.post(`${API_URL}/api/message`, body)
         const { data } = response.data
         socket.emit('new_message', data)
         socket.emit('stop_typing', selectedChat._id)
@@ -126,7 +127,7 @@ function SingleChat() {
     socket = io(
       process.env.NODE_ENV !== 'production'
         ? 'http://localhost:5000'
-        : 'https://signal-io-api.onrender.com'
+        : 'https://signal-io-api.onrender.com:5000'
     )
     socket.emit('setup', currentUser)
     socket.on('connected', () => setSocketConnected(true))

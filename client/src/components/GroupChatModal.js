@@ -86,6 +86,8 @@ function GroupChatModal() {
   };
 
   const handleSubmit = async () => {
+    const API_URL = process.env.API_URL
+
     if (!groupChatName || selectedUsers.length < 1) {
       return toast({
         position: 'top',
@@ -97,10 +99,10 @@ function GroupChatModal() {
       });
     }
     try {
-      const response = await axios.post('/api/chat/group', {
+      const response = await axios.post(`${API_URL}/api/chat/group`, {
         name: groupChatName,
         users: selectedUsers.map((user) => user._id),
-      });
+      })
       const { data } = response.data;
       setChats((prev) => {
         return [data, ...prev];

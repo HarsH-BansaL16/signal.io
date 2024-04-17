@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const toast = useToast();
+  const API_URL = process.env.API_URL
 
   const setUser = (user) => {
     setCurrentUser(user);
@@ -18,7 +19,7 @@ export const UserProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       setAuthLoading(true);
-      const response = await axios.post('/api/user/auth');
+      const response = await axios.post(`${API_URL}/api/user/auth`);
       const { data } = response.data;
       setUser(data);
       setAuthLoading(false);
@@ -30,7 +31,7 @@ export const UserProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/user/login', { email, password });
+      const response = await axios.post(`${API_URL}/api/user/login`, { email, password });
       const { data } = response.data;
       setUser(data);
       return toast({
@@ -56,7 +57,7 @@ export const UserProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      const response = await axios.post('/api/user/register', {
+      const response = await axios.post(`${API_URL}/api/user/register`, {
         name,
         email,
         password,
@@ -86,7 +87,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await axios.post('/api/user/logout');
+      const response = await axios.post(`${API_URL}/api/user/logout`);
       const { message } = response.data;
       setUser(null);
       return toast({

@@ -31,6 +31,7 @@ function SearchUserSideDrawer({ children }) {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [chatsLoading, setChatsLoading] = useState(false);
+  const API_URL = process.env.API_URL
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ function SearchUserSideDrawer({ children }) {
     }
     try {
       setLoading(true);
-      const response = await axios.get(`/api/user?search=${searchText}`);
+      const response = await axios.get(`${API_URL}/api/user?search=${searchText}`);
       const { data } = response.data;
       setLoading(false);
       setSearchResult(data);
@@ -66,7 +67,7 @@ function SearchUserSideDrawer({ children }) {
   const handleAccessChat = async (userId) => {
     try {
       setChatsLoading(true);
-      const response = await axios.post('/api/chat', { userId });
+      const response = await axios.post(`${API_URL}/api/chat`, { userId });
       const { data } = response.data;
       if (!chats.find((chat) => chat._id === data._id)) {
         setChats((prev) => {

@@ -12,10 +12,11 @@ export const ChatProvider = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [notification, setNotification] = useState([]);
   const [fetchFlag, setFetchFlag] = useState(false);
+  const API_URL = process.env.API_URL
 
   const fetchUserChats = async () => {
     try {
-      const response = await axios.get('/api/chat');
+      const response = await axios.get(`${API_URL}/api/chat`)
       const { data } = response.data;
       setChats(data);
     } catch (error) {
