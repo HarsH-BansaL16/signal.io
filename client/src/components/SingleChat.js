@@ -129,7 +129,7 @@ function SingleChat() {
     socket = io(
       process.env.REACT_APP_NODE_ENV !== 'production'
         ? 'http://localhost:5000'
-        : 'https://api-signal-io.onrender.com:5000'
+        : `${API_URL}`
     )
     socket.emit('setup', currentUser)
     socket.on('connected', () => setSocketConnected(true))
