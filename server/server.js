@@ -61,9 +61,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // starting server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6000;
 const server = app.listen(PORT, () => {
-  console.log('server running 🚀');
+  console.log('server running at',PORT);
 });
 
 // starting the socket
