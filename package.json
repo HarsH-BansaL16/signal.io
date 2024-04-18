@@ -4,8 +4,8 @@
   "description": "Chatting application created using MERN.",
   "main": "server/server.js",
   "scripts": {
-    "dev": "nodemon server/server.js",
-    "start": "node server/server.js"
+    "dev": "nodemon api/server.js",
+    "start": "node api/server.js"
   },
   "author": "Harsh Bansal",
   "license": "MIT",

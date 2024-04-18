@@ -8,21 +8,21 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 // require db configs
-const connectToDb = require('./config/db');
+const connectToDb = require('../server/config/db');
 
 // initialize express
 const app = express();
 
 // requiring routers
-const userRouter = require('./routes/userRouter');
-const chatRouter = require('./routes/chatRouter');
-const messageRouter = require('./routes/messageRouter');
+const userRouter = require('../server/routes/userRouter');
+const chatRouter = require('../server/routes/chatRouter');
+const messageRouter = require('../server/routes/messageRouter');
 
 // requiring middlewares
-const errorMiddleware = require('./middleware/Error');
+const errorMiddleware = require('../server/middleware/Error');
 
 // requiring sockets event handlers
-const socketEventHandler = require('./controllers/socketController');
+const socketEventHandler = require('../server/controllers/socketController');
 
 // uncaught exception
 process.on('uncaughtException', (err) => {
