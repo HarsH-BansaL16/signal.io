@@ -8,21 +8,21 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 // require db configs
-const connectToDb = require('../server/config/db');
+const connectToDb = require('./config/db');
 
 // initialize express
 const app = express();
 
 // requiring routers
-const userRouter = require('../server/routes/userRouter');
-const chatRouter = require('../server/routes/chatRouter');
-const messageRouter = require('../server/routes/messageRouter');
+const userRouter = require('./routes/userRouter');
+const chatRouter = require('./routes/chatRouter');
+const messageRouter = require('./routes/messageRouter');
 
 // requiring middlewares
-const errorMiddleware = require('../server/middleware/Error');
+const errorMiddleware = require('./middleware/Error');
 
 // requiring sockets event handlers
-const socketEventHandler = require('../server/controllers/socketController');
+const socketEventHandler = require('./controllers/socketController');
 
 // uncaught exception
 process.on('uncaughtException', (err) => {
@@ -35,7 +35,7 @@ process.on('uncaughtException', (err) => {
 connectToDb();
 
 // using middlewares
-app.use(cors({ origin: "*", credentials: true }));
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }))
 app.use(express.json({ limit: '20mb' }));
 app.use(cookieParser());
 
