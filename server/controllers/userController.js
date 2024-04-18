@@ -22,52 +22,52 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
   sendToken(user, 200, res)
 })
 
-// login existing user
+// Login existing user
 exports.loginUser = catchAsyncError(async (req, res, next) => {
-  const { email, password } = req.body
+  const { email, password } = req.body;
   if (!email || !password) {
-    return next(new ErrorHandler('Missing fields', 400))
+    return next(new ErrorHandler('Missing fields', 400));
   }
-  const user = await User.findOne({ email }).select('+password')
-  if (!user) {
-    return next(new ErrorHandler('Invalid email or password', 401))
+  const user = await User.findOne({ email }).select('+password');
+  if (!user || !(await user.comparePassword(password))) {
+    return next(new ErrorHandler('Invalid email or password', 401));
   }
-  const isPasswordMatched = await user.comparePassword(password)
-  if (!isPasswordMatched) {
-    return next(new ErrorHandler('Invalid email or password', 401))
-  }
-  sendToken(user, 200, res)
-})
+  sendToken(user, 200, res);
+});
 
-// logout current user
+// Logout current user
 exports.logoutUser = catchAsyncError(async (req, res, next) => {
-  res.cookie('token', null, {
-    expires: new Date(Date.now()),
-    httpOnly: true,
-    sameSite: 'none',
-    secure: true,
-  })
+  // No need to clear cookies, since we're not setting any cookies
   res.status(200).json({
     success: true,
     message: 'Logged Out',
-  })
-})
+  });
+});
 
-// send current user details
+
+// Send current user details
 exports.sendCurrentUser = catchAsyncError(async (req, res, next) => {
-  const { token } = req.cookies
+  const token = req.headers.authorization;
+
   if (!token) {
     return next(
       new ErrorHandler('Please login again to access this resource', 401)
-    )
+    );
   }
-  const decodedData = await jwt.verify(token, process.env.JWT_SECRET)
-  const user = await User.findById(decodedData.id)
-  if (!user) {
-    new ErrorHandler('User not found', 401)
+
+  try {
+    const decodedData = jwt.verify(token.split(' ')[1], process.env.JWT_SECRET)
+
+    const user = await User.findById(decodedData.id);
+    if (!user) {
+      return next(new ErrorHandler('User not found', 401));
+    }
+    sendToken(user, 200, res);
+  } catch (error) {
+    return next(new ErrorHandler('Invalid Token', 401));
   }
-  sendToken(user, 200, res)
-})
+});
+
 
 // send user(s)
 exports.sendUsers = catchAsyncError(async (req, res, next) => {

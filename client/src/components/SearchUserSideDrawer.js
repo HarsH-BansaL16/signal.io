@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
-import { AiOutlineSearch } from 'react-icons/ai';
-import { getLocalStorage } from '../utils/helpers';
-import { SkeletonLoader, UserListItem } from '.';
+import React, { useRef, useState } from 'react'
+import { AiOutlineSearch } from 'react-icons/ai'
+import { getLocalStorage } from '../utils/helpers'
+import { SkeletonLoader, UserListItem } from '.'
 import {
   Drawer,
   DrawerBody,
@@ -15,26 +15,26 @@ import {
   HStack,
   IconButton,
   useToast,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import { useChatContext } from '../context/chatContext';
-import { useUserContext } from '../context/userContext';
+} from '@chakra-ui/react'
+import axios from 'axios'
+import { useChatContext } from '../context/chatContext'
+import { useUserContext } from '../context/userContext'
 
 function SearchUserSideDrawer({ children }) {
-  const toast = useToast();
-  const InputFocusRef = useRef();
+  const toast = useToast()
+  const InputFocusRef = useRef()
   const { chats, selectedChat, setChats, setSelectedChat, fetchFlag } =
-    useChatContext();
-  const { currentUser } = useUserContext();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [searchText, setSearchText] = useState('');
-  const [searchResult, setSearchResult] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [chatsLoading, setChatsLoading] = useState(false);
+    useChatContext()
+  const { currentUser } = useUserContext()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [searchText, setSearchText] = useState('')
+  const [searchResult, setSearchResult] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [chatsLoading, setChatsLoading] = useState(false)
   const API_URL = process.env.REACT_APP_API_URL
 
   const handleSearch = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!searchText) {
       return toast({
         position: 'top',
@@ -43,16 +43,18 @@ function SearchUserSideDrawer({ children }) {
         status: 'warning',
         duration: 5000,
         isClosable: true,
-      });
+      })
     }
     try {
-      setLoading(true);
-      const response = await axios.get(`${API_URL}/api/user?search=${searchText}`);
-      const { data } = response.data;
-      setLoading(false);
-      setSearchResult(data);
+      setLoading(true)
+      const response = await axios.get(
+        `${API_URL}/api/user?search=${searchText}`
+      )
+      const { data } = response.data
+      setLoading(false)
+      setSearchResult(data)
     } catch (error) {
-      setLoading(false);
+      setLoading(false)
       return toast({
         position: 'top',
         title: 'Error occured',
@@ -60,26 +62,40 @@ function SearchUserSideDrawer({ children }) {
         status: 'error',
         duration: 5000,
         isClosable: true,
-      });
+      })
     }
-  };
+  }
 
   const handleAccessChat = async (userId) => {
     try {
-      setChatsLoading(true);
-      const response = await axios.post(`${API_URL}/api/chat`, { userId });
-      const { data } = response.data;
+      setChatsLoading(true)
+
+      const token = localStorage.getItem('token')
+      if (!token) {
+        console.log('Token not found')
+        setChatsLoading(false)
+        return
+      }
+
+      const response = await axios.post(`${API_URL}/api/chat`,{ userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      const { data } = response.data
       if (!chats.find((chat) => chat._id === data._id)) {
         setChats((prev) => {
-          return [data, ...prev];
-        });
+          return [data, ...prev]
+        })
       }
-      setSelectedChat(data);
-      setChatsLoading(false);
-      onClose();
+      setSelectedChat(data)
+      setChatsLoading(false)
+      onClose()
     } catch (error) {
-      const { message } = error.response.data;
-      setChatsLoading(false);
+      const { message } = error.response.data
+      setChatsLoading(false)
       return toast({
         position: 'top',
         title: 'Error occured',
@@ -87,9 +103,9 @@ function SearchUserSideDrawer({ children }) {
         status: 'error',
         duration: 5000,
         isClosable: true,
-      });
+      })
     }
-  };
+  }
 
   return (
     <>
@@ -134,7 +150,7 @@ function SearchUserSideDrawer({ children }) {
                       user={user}
                       handleClick={() => handleAccessChat(user._id)}
                     />
-                  );
+                  )
                 })}
               </Box>
             )}
@@ -142,7 +158,7 @@ function SearchUserSideDrawer({ children }) {
         </DrawerContent>
       </Drawer>
     </>
-  );
+  )
 }
 
-export default SearchUserSideDrawer;
+export default SearchUserSideDrawer
